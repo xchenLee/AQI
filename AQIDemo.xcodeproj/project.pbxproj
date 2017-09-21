@@ -16,6 +16,7 @@
 		93C7F38A1F6A541800643012 /* AQIDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C7F3891F6A541800643012 /* AQIDemoTests.swift */; };
 		93C7F3951F6A541800643012 /* AQIDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C7F3941F6A541800643012 /* AQIDemoUITests.swift */; };
 		93C7F3A31F6A58BE00643012 /* AQIAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C7F3A21F6A58BE00643012 /* AQIAPI.swift */; };
+		A12FCDE01F73FE7A006723C2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12FCDDF1F73FE7A006723C2 /* Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		93C7F3961F6A541800643012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93C7F3A21F6A58BE00643012 /* AQIAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AQIAPI.swift; sourceTree = "<group>"; };
 		A0A4B28090264A720DB77D06 /* Pods-AQIDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AQIDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-AQIDemo/Pods-AQIDemo.release.xcconfig"; sourceTree = "<group>"; };
+		A12FCDDF1F73FE7A006723C2 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		B33A774F2234C008BAD812D3 /* Pods_AQIDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AQIDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D804B5D522B5A24FFB48CA09 /* Pods-AQIDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AQIDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AQIDemo/Pods-AQIDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +117,7 @@
 				93C7F37D1F6A541800643012 /* LaunchScreen.storyboard */,
 				93C7F3801F6A541800643012 /* Info.plist */,
 				93C7F3A21F6A58BE00643012 /* AQIAPI.swift */,
+				A12FCDDF1F73FE7A006723C2 /* Extension.swift */,
 			);
 			path = AQIDemo;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				93C7F3771F6A541800643012 /* ViewController.swift in Sources */,
 				93C7F3A31F6A58BE00643012 /* AQIAPI.swift in Sources */,
 				93C7F3751F6A541800643012 /* AppDelegate.swift in Sources */,
+				A12FCDE01F73FE7A006723C2 /* Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16A313a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,7 +26,7 @@
                             </imageView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kjt-aa-bGl">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ipM-Zo-q8A">
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ipM-Zo-q8A">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
@@ -41,10 +41,27 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZm-rk-ndC">
+                                        <rect key="frame" x="307" y="609" width="38" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3N-Nd-iqJ">
+                                        <rect key="frame" x="282" y="563" width="63" height="34"/>
+                                        <state key="normal" title="Refresh"/>
+                                        <connections>
+                                            <action selector="refreshBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UvV-A0-nep"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="JZm-rk-ndC" secondAttribute="bottom" constant="40" id="5In-VZ-6jQ"/>
                                     <constraint firstItem="J1k-eu-bcI" firstAttribute="leading" secondItem="STP-Uc-bHU" secondAttribute="leading" constant="30" id="5XF-pm-PNU"/>
+                                    <constraint firstAttribute="trailing" secondItem="t3N-Nd-iqJ" secondAttribute="trailing" constant="30" id="7z5-Db-tKj"/>
+                                    <constraint firstAttribute="bottom" secondItem="t3N-Nd-iqJ" secondAttribute="bottom" constant="70" id="ViC-Sx-5ZZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="JZm-rk-ndC" secondAttribute="trailing" constant="30" id="cqE-8e-3rg"/>
                                     <constraint firstItem="J1k-eu-bcI" firstAttribute="top" secondItem="STP-Uc-bHU" secondAttribute="top" constant="64" id="zCM-at-lps"/>
                                 </constraints>
                             </view>
@@ -68,6 +85,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="locationLabel" destination="JZm-rk-ndC" id="lMi-9p-h5j"/>
                         <outlet property="pm25Label" destination="J1k-eu-bcI" id="ayg-xa-6cv"/>
                         <outlet property="wallBlur" destination="Kjt-aa-bGl" id="SXf-2N-VRX"/>
                         <outlet property="wallPaper" destination="C7D-cp-HXX" id="EEA-tw-nPf"/>

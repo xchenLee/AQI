@@ -41,6 +41,27 @@ class AQIAPI: NSObject {
             }
         }
     }
+    
+    class func locationFeed(_ lat: Double, lon: Double, completionHandler: @escaping (JSON, Error?) -> Void) {
+        let url = "https://api.waqi.info/feed/geo:\(lat);\(lon)/" + "?token=" + tokenOfAQI
+        Alamofire.request(url).responseJSON { (response) in
+            
+            print("Response: \(String(describing: response.response))")
+            print("Result: \(response.result)")
+            
+            if let jsonValue = response.result.value {
+                let parsedResult = JSON(jsonValue)
+                DispatchQueue.main.async {
+                    completionHandler(parsedResult, nil)
+                }
+                print("JSON: \(parsedResult)")
+            } else {
+                DispatchQueue.main.async {
+                    completionHandler(JSON({}), nil)
+                }
+            }
+        }
+    }
 }
 
 
