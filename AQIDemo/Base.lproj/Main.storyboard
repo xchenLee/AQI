@@ -41,9 +41,9 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZm-rk-ndC">
-                                        <rect key="frame" x="307" y="609" width="38" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZm-rk-ndC">
+                                        <rect key="frame" x="345" y="627" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -54,13 +54,21 @@
                                             <action selector="refreshBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UvV-A0-nep"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hld-uy-4XY">
+                                        <rect key="frame" x="345" y="30" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="JZm-rk-ndC" secondAttribute="bottom" constant="40" id="5In-VZ-6jQ"/>
                                     <constraint firstItem="J1k-eu-bcI" firstAttribute="leading" secondItem="STP-Uc-bHU" secondAttribute="leading" constant="30" id="5XF-pm-PNU"/>
                                     <constraint firstAttribute="trailing" secondItem="t3N-Nd-iqJ" secondAttribute="trailing" constant="30" id="7z5-Db-tKj"/>
+                                    <constraint firstAttribute="trailing" secondItem="hld-uy-4XY" secondAttribute="trailing" constant="30" id="HJd-5E-Png"/>
                                     <constraint firstAttribute="bottom" secondItem="t3N-Nd-iqJ" secondAttribute="bottom" constant="70" id="ViC-Sx-5ZZ"/>
+                                    <constraint firstItem="hld-uy-4XY" firstAttribute="top" secondItem="STP-Uc-bHU" secondAttribute="top" constant="30" id="WW7-OQ-FKS"/>
                                     <constraint firstAttribute="trailing" secondItem="JZm-rk-ndC" secondAttribute="trailing" constant="30" id="cqE-8e-3rg"/>
                                     <constraint firstItem="J1k-eu-bcI" firstAttribute="top" secondItem="STP-Uc-bHU" secondAttribute="top" constant="64" id="zCM-at-lps"/>
                                 </constraints>
@@ -87,6 +95,7 @@
                     <connections>
                         <outlet property="locationLabel" destination="JZm-rk-ndC" id="lMi-9p-h5j"/>
                         <outlet property="pm25Label" destination="J1k-eu-bcI" id="ayg-xa-6cv"/>
+                        <outlet property="tempLabel" destination="hld-uy-4XY" id="oqk-2X-sMM"/>
                         <outlet property="wallBlur" destination="Kjt-aa-bGl" id="SXf-2N-VRX"/>
                         <outlet property="wallPaper" destination="C7D-cp-HXX" id="EEA-tw-nPf"/>
                     </connections>

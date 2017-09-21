@@ -18,6 +18,7 @@ let badColor   = UIColor(red: 187/255, green: 0/255,   blue: 40/255,  alpha: 1)
 let worseColor = UIColor(red: 82/255,  green: 0/255,   blue: 135/255, alpha: 1)
 let worstColor = UIColor(red: 105/255, green: 0/255,   blue: 27/255,  alpha: 1)
 
+let textColor  = UIColor(red: 62/255,  green: 64/255,   blue: 62/255,  alpha: 1)
 
 
 
@@ -30,6 +31,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     
     // 位置相关
+    @IBOutlet weak var tempLabel: UILabel!
     let clManager = CLLocationManager()
     var lastLatitude: Double = 0
     var lastLongitude: Double = 0
@@ -53,8 +55,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //没有错误
             if error == nil {
                 let pm25 = result["data"]["iaqi"]["pm25"]["v"].int!
+                let temp = result["data"]["iaqi"]["t"]["v"].int!
+
                 self.pm25Label.text = "PM2.5: \(pm25)"
-                self.pm25Label.textColor = self.textColor(pm25)
+                self.pm25Label.textColor = self.qualityColor(pm25)
+                self.tempLabel.text = "\(temp)°C"
                 return
             }
         }
@@ -86,6 +91,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // 文本
         self.pm25Label.text = "PM2.5:"
         self.locationLabel.text = "经纬度:"
+        self.pm25Label.textColor = textColor
+        self.tempLabel.textColor = textColor
+        self.locationLabel.textColor = textColor
         
     }
     
@@ -135,8 +143,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             let pm25 = result["data"]["iaqi"]["pm25"]["v"].int!
             self.pm25Label.text = "PM2.5: \(pm25)"
-            self.pm25Label.textColor = self.textColor(pm25)
+            self.pm25Label.textColor = self.qualityColor(pm25)
             
+            let temp = result["data"]["iaqi"]["t"]["v"].int!
+            self.tempLabel.text = "\(temp)°C"
         }
     }
 }
@@ -160,7 +170,7 @@ extension ViewController {
         return UIImage(named: name)
     }
     
-    func textColor(_ quality: Int) -> UIColor {
+    func qualityColor(_ quality: Int) -> UIColor {
         
         if quality <= 50 {
             return goodColor
@@ -174,6 +184,40 @@ extension ViewController {
             return worseColor
         } else {
             return worstColor
+        }
+    }
+    
+    func qualityLevel(_ quality: Int) -> String {
+        
+        if quality <= 50 {
+            return "优"
+        } else if quality <= 100 {
+            return "良"
+        } else if quality <= 150 {
+            return "轻度污染"
+        } else if quality <= 200 {
+            return "重度污染"
+        } else if quality <= 300 {
+            return "重度污染"
+        } else {
+            return "严重污染"
+        }
+    }
+    
+    func qualityImpact(_ quality: Int) -> String {
+        
+        if quality <= 50 {
+            return "空气质量令人满意，基本无空气污染"
+        } else if quality <= 100 {
+            return "空气质量可接受，但某些污染物可能对极少数异常敏感人群健康有较弱影响"
+        } else if quality <= 150 {
+            return "易感人群症状有轻度加剧，健康人群出现刺激症状"
+        } else if quality <= 200 {
+            return "进一步加剧易感人群症状，可能对健康人群心脏、呼吸系统有影响"
+        } else if quality <= 300 {
+            return "心脏病和肺病患者症状显著加剧，运动耐受力降低，健康人群普遍出现症状"
+        } else {
+            return "健康人群运动耐受力降低，有明显强烈症状，提前出现某些疾病"
         }
     }
     
