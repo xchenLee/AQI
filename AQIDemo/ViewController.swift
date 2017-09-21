@@ -12,6 +12,7 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
+    @IBOutlet weak var pm25Label: UILabel!
     @IBOutlet weak var wallBlur: UIVisualEffectView!
     @IBOutlet weak var wallPaper: UIImageView!
     
@@ -33,10 +34,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func requestQuality(_ city: String) {
         
         AQIAPI.cityFeed(city) { (result, error) in
-            
             //没有错误
             if error == nil {
-                
+                let pm25 = result["data"]["iaqi"]["pm25"]["v"].int!
+                self.pm25Label.text = "\(pm25)"
+                return
             }
         }
     }
