@@ -1,8 +1,8 @@
 //
-//  AQIAPI.swift
-//  AQIDemo
+//  APIClient.swift
+//  API
 //
-//  Created by danlan on 2017/9/14.
+//  Created by danlan on 2017/9/26.
 //  Copyright © 2017年 lxc. All rights reserved.
 //
 
@@ -10,18 +10,23 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-private let instanceOfAQI = AQIAPI()
-private let tokenOfAQI: String = "d08c38afaca02d63ab102c066fac8e8e5e8b47fd"
 
-class AQIAPI: NSObject {
+private let instanceOfAQI = APIClient()
 
-    class var shared: AQIAPI {
+public class APIClient: NSObject {
+    
+    let tokenOfAQI: String = "d08c38afaca02d63ab102c066fac8e8e5e8b47fd"
+    let baseUrl: String = "https://api.waqi.info"
+
+    // to write a singleton method
+    public class var shared: APIClient {
         return instanceOfAQI
     }
     
-    
-    class func cityFeed(_ city: String, completionHandler: @escaping (JSON, Error?) -> Void) {
-        let url = "https://api.waqi.info/feed/" + city + "/" + "?token=" + tokenOfAQI
+    public func cityFeed(_ city: String, completionHandler: @escaping (JSON, Error?) -> Void) {
+        let url = baseUrl + "/feed/" + city + "/" + "?token=" + tokenOfAQI
+        
+        //let serverTrustPolicies: [String: ServerTrustPolicy] = ["instore.meduzaradio.com": .DisableEvaluation]
         
         Alamofire.request(url).responseJSON { (response) in
             
@@ -42,8 +47,8 @@ class AQIAPI: NSObject {
         }
     }
     
-    class func locationFeed(_ lat: Double, lon: Double, completionHandler: @escaping (JSON, Error?) -> Void) {
-        let url = "https://api.waqi.info/feed/geo:\(lat);\(lon)/" + "?token=" + tokenOfAQI
+    public func locationFeed(_ lat: Double, lon: Double, completionHandler: @escaping (JSON, Error?) -> Void) {
+        let url = baseUrl + "/feed/geo:\(lat);\(lon)/" + "?token=" + tokenOfAQI
         Alamofire.request(url).responseJSON { (response) in
             
             print("Response: \(String(describing: response.response))")
@@ -63,13 +68,4 @@ class AQIAPI: NSObject {
         }
     }
 }
-
-
-
-
-
-
-
-
-
 

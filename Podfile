@@ -8,4 +8,29 @@ target 'AQIDemo' do
   # Pods for AQIDemo
   pod 'Alamofire', '~> 4.5.0' 
   pod 'SwiftyJSON'
+  pod 'pop'
 end
+
+target 'AQIWidget' do
+    use_frameworks!
+    
+    # Pods for AQIDemo
+    pod 'Alamofire', '~> 4.5.0'
+    pod 'SwiftyJSON'
+end
+
+target 'API' do
+    use_frameworks!
+    
+    pod 'Alamofire', '~> 4.5.0'
+    pod 'SwiftyJSON'
+end
+
+target 'BluedNet' do
+    use_frameworks!
+    
+    pod 'Alamofire', '~> 4.5.0'
+    pod 'SwiftyJSON'
+end
+
+#  或者不写target，全部应用

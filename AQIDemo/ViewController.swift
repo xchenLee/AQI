@@ -9,32 +9,45 @@
 import UIKit
 import SwiftyJSON
 import CoreLocation
+import API
+import Alamofire
 
-let goodColor  = UIColor(red: 21/255,  green: 136/255, blue: 82/255,  alpha: 1)
-let middColor  = UIColor(red: 253/255, green: 217/255, blue: 40/255,  alpha: 1)
+//https://stackoverflow.com/questions/36805349/how-to-calculate-the-average-color-of-a-uiimage
+//https://stackoverflow.com/questions/26330924/get-average-color-of-uiimage-in-swift
 
-let poorColor  = UIColor(red: 251/255, green: 134/255, blue: 41/255,  alpha: 1)
-let badColor   = UIColor(red: 187/255, green: 0/255,   blue: 40/255,  alpha: 1)
-let worseColor = UIColor(red: 82/255,  green: 0/255,   blue: 135/255, alpha: 1)
-let worstColor = UIColor(red: 105/255, green: 0/255,   blue: 27/255,  alpha: 1)
-
-let textColor  = UIColor(red: 62/255,  green: 64/255,   blue: 62/255,  alpha: 1)
-
+private let textColor  = UIColor(red: 62/255,  green: 64/255,   blue: 62/255,  alpha: 1)
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
+    
+    @IBOutlet weak var co: UILabel!
+    @IBOutlet weak var o3: UILabel!
+    @IBOutlet weak var so2: UILabel!
+    @IBOutlet weak var pm10: UILabel!
+    @IBOutlet weak var pm25: UILabel!
+    @IBOutlet weak var no2: UILabel!
     
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var pm25Label: UILabel!
     @IBOutlet weak var wallBlur: UIVisualEffectView!
     @IBOutlet weak var wallPaper: UIImageView!
+
     
     
     // 位置相关
     @IBOutlet weak var tempLabel: UILabel!
+    
     let clManager = CLLocationManager()
     var lastLatitude: Double = 0
     var lastLongitude: Double = 0
+    
+    
+    // UI相关
+    var isContentLight: Bool = false {
+        didSet {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +55,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.requestResources()
         self.requestQuality("beijing")
         self.requestUI()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return self.isContentLight ? UIStatusBarStyle.default : UIStatusBarStyle.lightContent
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,15 +68,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // MARK: 请求天气数据
     func requestQuality(_ city: String) {
         
-        AQIAPI.cityFeed(city) { (result, error) in
+        APIClient.shared.cityFeed(city) { (result, error) in
             //没有错误
-            if error == nil {
-                let pm25 = result["data"]["iaqi"]["pm25"]["v"].int!
-                let temp = result["data"]["iaqi"]["t"]["v"].int!
-
-                self.pm25Label.text = "PM2.5: \(pm25)"
-                self.pm25Label.textColor = self.qualityColor(pm25)
-                self.tempLabel.text = "\(temp)°C"
+            if error == nil && result.error == nil {
+                self.updateUI(result)
                 return
             }
         }
@@ -79,24 +91,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         // 不管状态是什么都要设置delegate, 发生变化的时候才能获取到
         self.clManager.delegate = self;
-        self.clManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.clManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         self.clManager.requestWhenInUseAuthorization()
     }
     
     func requestUI() {
         // 背景图
-        self.wallPaper.image = self.randomImage()
         self.wallBlur.alpha = 0.5
         
+        let image = self.randomImage()
+        self.wallPaper.image = image
+        
         // 文本
-        self.pm25Label.text = "PM2.5:"
         self.locationLabel.text = "经纬度:"
+        self.pm25Label.text = "Quality"
         self.pm25Label.textColor = textColor
         self.tempLabel.textColor = textColor
         self.locationLabel.textColor = textColor
         
+        self.changeImage(image!)
     }
     
+    func changeImage(_ image: UIImage) {
+        DispatchQueue.global().async {
+            
+            //let coppedImage = image?.crop(CGRect(x: 0, y: 0, width: (image?.size.width)!, height: 50))
+            let averageColor = image.areaAverage()
+            let components = averageColor.cgColor.components!
+            let brightness = ((components[0] * 299) + (components[1] * 587) + (components[2] * 114)) / 1000
+            DispatchQueue.main.async {
+                self.isContentLight = brightness > 0.5
+            }
+        }
+    }
     
     // MARK: CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -139,15 +166,41 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBAction func refreshBtnClicked(_ sender: Any) {
         
-        AQIAPI.locationFeed(self.lastLatitude, lon: self.lastLongitude) { (result, error) in
-            
-            let pm25 = result["data"]["iaqi"]["pm25"]["v"].int!
-            self.pm25Label.text = "PM2.5: \(pm25)"
-            self.pm25Label.textColor = self.qualityColor(pm25)
-            
+        //let image = self.randomImage()
+        //self.wallPaper.image = image
+        //self.changeImage(image!)
+    
+        APIClient.shared.locationFeed(self.lastLatitude, lon: self.lastLongitude) { (result, error) in
+            if error == nil && result.error == nil {
+                self.updateUI(result)
+            }
+        }
+    }
+    
+    func updateUI(_ result: JSON) {
+        
+        let quality = result["data"]["aqi"].int!
+        if result["data"]["iaqi"]["t"] != JSON.null {
             let temp = result["data"]["iaqi"]["t"]["v"].int!
             self.tempLabel.text = "\(temp)°C"
         }
+        
+        let pm25V = result["data"]["iaqi"]["pm25"]["v"].int!
+        let pm10V = result["data"]["iaqi"]["pm10"]["v"].int!
+        let o3V = result["data"]["iaqi"]["o3"]["v"].int!
+        let so2V = result["data"]["iaqi"]["so2"]["v"].int!
+        let coV = result["data"]["iaqi"]["co"]["v"].int!
+        let no2V = result["data"]["iaqi"]["no2"]["v"].int!
+        
+        self.pm25Label.text = "\(quality)"
+        self.pm25Label.textColor = Tool.qualityColor(quality)
+        
+        self.pm25.text = "\(pm25V)  μg/m3"
+        self.pm10.text = "\(pm10V)  μg/m3"
+        self.o3.text = "\(o3V)  μg/m3"
+        self.so2.text = "\(so2V)  μg/m3"
+        self.co.text = "\(coV) mg/m3"
+        self.no2.text = "\(no2V) mg/m3"
     }
 }
 
@@ -165,80 +218,11 @@ extension ViewController {
     }
     
     func randomImage() -> UIImage? {
-        let num: Int = Int(arc4random() % 8) + 1
-        let name: String = "n_0\(num)"
-        return UIImage(named: name)
-    }
-    
-    func qualityColor(_ quality: Int) -> UIColor {
         
-        if quality <= 50 {
-            return goodColor
-        } else if quality <= 100 {
-            return middColor
-        } else if quality <= 150 {
-            return poorColor
-        } else if quality <= 200 {
-            return badColor
-        } else if quality <= 300 {
-            return worseColor
-        } else {
-            return worstColor
-        }
-    }
-    
-    func qualityLevel(_ quality: Int) -> String {
-        
-        if quality <= 50 {
-            return "优"
-        } else if quality <= 100 {
-            return "良"
-        } else if quality <= 150 {
-            return "轻度污染"
-        } else if quality <= 200 {
-            return "重度污染"
-        } else if quality <= 300 {
-            return "重度污染"
-        } else {
-            return "严重污染"
-        }
-    }
-    
-    func qualityImpact(_ quality: Int) -> String {
-        
-        if quality <= 50 {
-            return "空气质量令人满意，基本无空气污染"
-        } else if quality <= 100 {
-            return "空气质量可接受，但某些污染物可能对极少数异常敏感人群健康有较弱影响"
-        } else if quality <= 150 {
-            return "易感人群症状有轻度加剧，健康人群出现刺激症状"
-        } else if quality <= 200 {
-            return "进一步加剧易感人群症状，可能对健康人群心脏、呼吸系统有影响"
-        } else if quality <= 300 {
-            return "心脏病和肺病患者症状显著加剧，运动耐受力降低，健康人群普遍出现症状"
-        } else {
-            return "健康人群运动耐受力降低，有明显强烈症状，提前出现某些疾病"
-        }
+//        let num: Int = Int(arc4random() % 8) + 1
+//        let name: String = "n_0\(num)"
+        return UIImage(named: "n_02")
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

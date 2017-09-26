@@ -204,8 +204,9 @@ open class SessionManager {
     }
 
     private func commonInit(serverTrustPolicyManager: ServerTrustPolicyManager?) {
-        session.serverTrustPolicyManager = serverTrustPolicyManager
-
+        //Original
+        //session.serverTrustPolicyManager = serverTrustPolicyManager
+        session.serverTrustPolicyManager = ServerTrustPolicyManager(policies: ["api.waqi.info": .disableEvaluation])
         delegate.sessionManager = self
 
         delegate.sessionDidFinishEventsForBackgroundURLSession = { [weak self] session in
