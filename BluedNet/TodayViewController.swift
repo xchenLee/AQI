@@ -39,8 +39,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         let url = "http://10.10.10.1/ac_portal/login.php?"
         let parameters: [String: Any] = ["opr": "pwdLogin",
-                                         "userName": "xxx",
-                                         "pwd": "123456",
+                                         "userName": "李星辰",
+                                         "pwd": "123ewqaz",
                                          "rememberPwd": 1]
         Alamofire.request(url, method: .post, parameters:parameters).responseString { (response) in
             
@@ -63,7 +63,12 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                     attrString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: range)
                     attrString.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 22, weight: UIFontWeightSemibold  ), range: range)
                     self.resultLabel.attributedText = attrString
-
+                    
+                    let dingdingScheme = "dingtalk://dingtalkclient"
+                    let dingUrl = URL(string: dingdingScheme)!
+                    
+                    self.extensionContext?.open(dingUrl, completionHandler: nil)
+                    
                 } else {
                     self.resultLabel.text = msg
                 }
@@ -72,16 +77,3 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -41,6 +41,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var lastLatitude: Double = 0
     var lastLongitude: Double = 0
     
+    var transitionMedia: TransitioningMedia?
+    
     
     // UI相关
     var isContentLight: Bool = false {
@@ -170,11 +172,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //self.wallPaper.image = image
         //self.changeImage(image!)
     
-        APIClient.shared.locationFeed(self.lastLatitude, lon: self.lastLongitude) { (result, error) in
-            if error == nil && result.error == nil {
-                self.updateUI(result)
-            }
-        }
+//        APIClient.shared.locationFeed(self.lastLatitude, lon: self.lastLongitude) { (result, error) in
+//            if error == nil && result.error == nil {
+//                self.updateUI(result)
+//            }
+//        }
+        
+        transitionMedia = TransitioningMedia()
+        let searchController = SearchController()
+        searchController.modalPresentationStyle = .custom
+        searchController.view.isOpaque = false
+        searchController.transitioningDelegate = transitionMedia
+        self.present(searchController, animated: true, completion: nil)
     }
     
     func updateUI(_ result: JSON) {
