@@ -13,6 +13,7 @@ class TransitioningMedia: NSObject, UIViewControllerTransitioningDelegate {
     
     //实际动画效果类
     var animator = AnimatorMedia()
+    var interact = SwipeVerticalTransition()
     
     //如果presented viewcontroller的 transitioningDelegate 设置了
 
@@ -20,8 +21,10 @@ class TransitioningMedia: NSObject, UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
         //用来标示是开启还是消失
-        animator.presenting = true
-        return animator
+        self.animator.presenting = true
+        
+        //self.interact.prepareGesture(presented)
+        return self.animator
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -35,7 +38,7 @@ class TransitioningMedia: NSObject, UIViewControllerTransitioningDelegate {
     //  UIKit 会调用这个方法，看是否interactive animator是否可用，nil的话，就执行动画，不涉及用户交互
     func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         
-        
+        interact.presenting = true
         return nil
         
         //不为空
@@ -58,6 +61,11 @@ class TransitioningMedia: NSObject, UIViewControllerTransitioningDelegate {
     }
     
     
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        
+        interact.presenting = false
+        return interact
+    }
     
 }
 

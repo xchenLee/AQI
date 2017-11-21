@@ -39,8 +39,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         let url = "http://10.10.10.1/ac_portal/login.php?"
         let parameters: [String: Any] = ["opr": "pwdLogin",
-                                         "userName": "李星辰",
-                                         "pwd": "123ewqaz",
+                                         "userName": "付子豪",
+                                         "pwd": "123456",
                                          "rememberPwd": 1]
         Alamofire.request(url, method: .post, parameters:parameters).responseString { (response) in
             

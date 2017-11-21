@@ -51,8 +51,9 @@ class AnimatorMedia: NSObject, UIViewControllerAnimatedTransitioning {
         
         
         //除了vc的view，中间可能添加和删除很多别的控件
+        //看猫身的代码，不用这个获取，直接拿VC的view
         var fromView = transitionContext.view(forKey: .from)
-        let toView   = transitionContext.view(forKey: .to)
+        var toView   = transitionContext.view(forKey: .to)
         
         
         /**
@@ -73,12 +74,16 @@ class AnimatorMedia: NSObject, UIViewControllerAnimatedTransitioning {
         // Always add the "to" view to the container.
         // And it doesn't hurt to set its start frame.
         
-        if fromView == nil {
+        /*if fromView == nil {
             //这样子好像不太好 ，会有问题
             //这篇文章也提到了
             //https://satanwoo.github.io/2015/11/12/Swift-UITransition-iOS8/
             fromView = fromVC?.view
         }
+        
+        if toView == nil {
+            toView = toVC?.view
+        }*/
         
         if self.presenting {
             // test_1
@@ -96,18 +101,17 @@ class AnimatorMedia: NSObject, UIViewControllerAnimatedTransitioning {
             fromViewFinalFrame = CGRect(x: 0, y: screenH, width: screenW, height: screenH)
         }
         
-        containerView.addSubview(fromView!)
-        fromView?.frame = fromViewStartFrame
+        //containerView.addSubview(fromView!)
+        //fromView?.frame = fromViewStartFrame
         
-        containerView.addSubview(toView!)
+        containerView.addSubview((toVC?.view)!)
         toView?.frame = toViewStartFrame
         
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), animations: {
             
             if self.presenting {
-                toView?.frame = toViewFinalFrame
-                //fromView?.frame = CGRect(x: 20, y: 20, width: containerView.frame.width - 40, height: containerView.frame.height)
-                fromView?.layer.transform = self.initialTransform()
+                toView?.frame = CGRect(x: 0, y: 0, width: screenW, height: screenH)
+                
             } else {
                 fromView?.frame = fromViewFinalFrame
             }
@@ -115,7 +119,7 @@ class AnimatorMedia: NSObject, UIViewControllerAnimatedTransitioning {
             
             let success = !transitionContext.transitionWasCancelled
             if ((self.presenting && !success) || (!self.presenting && success)) {
-                toView?.removeFromSuperview()
+                //toView?.removeFromSuperview()
             }
             
             transitionContext.completeTransition(true)

@@ -35,6 +35,8 @@
 		93E274BF1F79218900DB06C5 /* API.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93E274A91F79218900DB06C5 /* API.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		93E274C71F79EF1000DB06C5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E274C61F79EF1000DB06C5 /* APIClient.swift */; };
 		93E274C91F79F1B300DB06C5 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E274C81F79F1B300DB06C5 /* Tool.swift */; };
+		93EA96FE1F8CA6DD00339283 /* SwipeVerticalTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA96FD1F8CA6DD00339283 /* SwipeVerticalTransition.swift */; };
+		93EA97001F8CB46200339283 /* InteractionTransitionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA96FF1F8CB46200339283 /* InteractionTransitionProtocol.swift */; };
 		A12FCDE01F73FE7A006723C2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12FCDDF1F73FE7A006723C2 /* Extension.swift */; };
 		AB861040D3F1B260DC9378C2 /* Pods_BluedNet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E643BDF4D9A2B2898E156F22 /* Pods_BluedNet.framework */; };
 /* End PBXBuildFile section */
@@ -156,6 +158,8 @@
 		93E274BA1F79218900DB06C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93E274C61F79EF1000DB06C5 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		93E274C81F79F1B300DB06C5 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
+		93EA96FD1F8CA6DD00339283 /* SwipeVerticalTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeVerticalTransition.swift; sourceTree = "<group>"; };
+		93EA96FF1F8CB46200339283 /* InteractionTransitionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionTransitionProtocol.swift; sourceTree = "<group>"; };
 		9438440D7A29C65CEEAF7A00 /* Pods-aqiapi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aqiapi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-aqiapi/Pods-aqiapi.debug.xcconfig"; sourceTree = "<group>"; };
 		9FC14DE484331451D1D61905 /* Pods-API.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-API.debug.xcconfig"; path = "Pods/Target Support Files/Pods-API/Pods-API.debug.xcconfig"; sourceTree = "<group>"; };
 		A0A4B28090264A720DB77D06 /* Pods-AQIDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AQIDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-AQIDemo/Pods-AQIDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -285,6 +289,8 @@
 				9346DA261F7A5CFE00C323E7 /* SearchController.swift */,
 				936313D11F7CE42B000E8967 /* TransitioningMedia.swift */,
 				936313D31F7CEBD9000E8967 /* AnimatorMedia.swift */,
+				93EA96FD1F8CA6DD00339283 /* SwipeVerticalTransition.swift */,
+				93EA96FF1F8CB46200339283 /* InteractionTransitionProtocol.swift */,
 			);
 			path = AQIDemo;
 			sourceTree = "<group>";
@@ -806,8 +812,10 @@
 				93C7F3771F6A541800643012 /* ViewController.swift in Sources */,
 				93C7F3751F6A541800643012 /* AppDelegate.swift in Sources */,
 				A12FCDE01F73FE7A006723C2 /* Extension.swift in Sources */,
+				93EA97001F8CB46200339283 /* InteractionTransitionProtocol.swift in Sources */,
 				936313D21F7CE42C000E8967 /* TransitioningMedia.swift in Sources */,
 				9346DA271F7A5CFE00C323E7 /* SearchController.swift in Sources */,
+				93EA96FE1F8CA6DD00339283 /* SwipeVerticalTransition.swift in Sources */,
 				936313D41F7CEBD9000E8967 /* AnimatorMedia.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -986,6 +994,7 @@
 		93C7F3971F6A541800643012 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1036,6 +1045,7 @@
 		93C7F3981F6A541800643012 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1080,7 +1090,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D804B5D522B5A24FFB48CA09 /* Pods-AQIDemo.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1100,7 +1110,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0A4B28090264A720DB77D06 /* Pods-AQIDemo.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

@@ -183,6 +183,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         searchController.modalPresentationStyle = .custom
         searchController.view.isOpaque = false
         searchController.transitioningDelegate = transitionMedia
+        transitionMedia?.interact.prepareGesture(searchController)
         self.present(searchController, animated: true, completion: nil)
     }
     
