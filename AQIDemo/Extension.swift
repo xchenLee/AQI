@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 extension UIImage {
     
@@ -67,4 +68,21 @@ extension UIImage {
         let result = UIColor(red: CGFloat(bitmap[0]) / 255.0, green: CGFloat(bitmap[1]) / 255.0, blue: CGFloat(bitmap[2]) / 255.0, alpha: CGFloat(bitmap[3]) / 255.0)
         return result
     }
+    
 }
+
+
+//extension AVAudioSession {
+//    var isHeadphones: Bool {
+//        return portType == AVAudioSessionPortHeadphones
+//    }
+//}
+
+
+
+
+
+
+
+
+

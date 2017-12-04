@@ -11,6 +11,7 @@ import SwiftyJSON
 import CoreLocation
 import API
 import Alamofire
+import AVFoundation
 
 //https://stackoverflow.com/questions/36805349/how-to-calculate-the-average-color-of-a-uiimage
 //https://stackoverflow.com/questions/26330924/get-average-color-of-uiimage-in-swift
@@ -57,6 +58,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.requestResources()
         self.requestQuality("beijing")
         self.requestUI()
+        self.requestNotification()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -123,6 +125,69 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let brightness = ((components[0] * 299) + (components[1] * 587) + (components[2] * 114)) / 1000
             DispatchQueue.main.async {
                 self.isContentLight = brightness > 0.5
+            }
+        }
+    }
+    
+    func requestNotification() {
+        //注册变化
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSecondaryAudio), name: .AVAudioSessionRouteChange, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
+        
+    }
+    
+    func handleRouteChange(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo,
+            let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+            let reason = AVAudioSessionRouteChangeReason(rawValue:reasonValue) else {
+                return
+        }
+        switch reason {
+        case .newDeviceAvailable:
+            print("Handle new device available")
+        case .oldDeviceUnavailable:
+            print("Handle old device removed")
+        case .categoryChange:
+            print("The audio category has changed")
+        default: ()
+        }
+    }
+    
+    func handleSecondaryAudio(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+            let typeValue = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
+            let type = AVAudioSessionSilenceSecondaryAudioHintType(rawValue: typeValue) else {
+                return
+        }
+        
+        if type == .begin {
+            // Other app audio started playing - mute secondary audio
+        } else {
+            // Other app audio stopped playing - restart secondary audio
+        }
+    }
+    
+    func handleInterruption(_ notification: Notification) {
+        guard let info = notification.userInfo,
+            let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSessionInterruptionType(rawValue: typeValue) else {
+                return
+        }
+        if type == .began {
+            // Interruption began, take appropriate actions (save state, update user interface)
+        }
+        else if type == .ended {
+            guard let optionsValue =
+                info[AVAudioSessionInterruptionOptionKey] as? UInt else {
+                    return
+            }
+            let options = AVAudioSessionInterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                // Interruption Ended - playback should resume
             }
         }
     }
@@ -196,21 +261,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         let pm25V = result["data"]["iaqi"]["pm25"]["v"].int!
-        let pm10V = result["data"]["iaqi"]["pm10"]["v"].int!
+        /*let pm10V = result["data"]["iaqi"]["pm10"]["v"].int!
         let o3V = result["data"]["iaqi"]["o3"]["v"].int!
         let so2V = result["data"]["iaqi"]["so2"]["v"].int!
         let coV = result["data"]["iaqi"]["co"]["v"].int!
-        let no2V = result["data"]["iaqi"]["no2"]["v"].int!
+        let no2V = result["data"]["iaqi"]["no2"]["v"].int!*/
         
         self.pm25Label.text = "\(quality)"
         self.pm25Label.textColor = Tool.qualityColor(quality)
         
         self.pm25.text = "\(pm25V)  μg/m3"
-        self.pm10.text = "\(pm10V)  μg/m3"
+        /*self.pm10.text = "\(pm10V)  μg/m3"
         self.o3.text = "\(o3V)  μg/m3"
         self.so2.text = "\(so2V)  μg/m3"
         self.co.text = "\(coV) mg/m3"
-        self.no2.text = "\(no2V) mg/m3"
+        self.no2.text = "\(no2V) mg/m3"*/
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
